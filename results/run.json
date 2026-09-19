@@ -1,0 +1,10 @@
+{
+  "data": "user supplied images",
+  "train": 8000,
+  "validation": 1000,
+  "test": 1000,
+  "seed": 42,
+  "epochs": 10,
+  "latent_dim": 64,
+  "VAE_evaluation": "decoder at posterior mean; validation checkpoint selected on reconstruction MSE"
+}
