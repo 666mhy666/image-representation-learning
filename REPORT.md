@@ -10,17 +10,19 @@ How do PCA, a dense autoencoder, and a variational autoencoder compare at the sa
 
 ## Analysis
 
-Added a reproducible 80/10/10 split, matched latent dimensions, validation-based checkpoint selection, and a common held-out pixel MSE. Synthetic smoke-test artifacts are kept private and never reported as image-dataset performance.
+I created a shared 80/10/10 image split, matched the latent dimension across methods, selected neural-network checkpoints on validation reconstruction error, and evaluated every model with held-out pixel MSE.
 
-The entry point is `analysis.py`. Parameters and analysis cohorts are recorded in the code and result files.
+The entry point is `analysis.py`. Parameters, variables, assumptions, and analysis cohorts are recorded in the code and generated result files.
 
 ## Findings
 
 The revised experiment uses 8,000 training, 1,000 validation, and 1,000 test images, with 64 latent dimensions and ten training epochs. Held-out pixel MSE was 0.00750 for PCA, 0.01677 for the autoencoder, and 0.03600 for the VAE. PCA performed best under this training budget and metric. No images or fitted weights are distributed.
 
-![Main result](results/reconstruction-comparison.png)
+![Held-out pixel MSE for three 64-dimensional representations; lower is better.](results/reconstruction-comparison.png)
 
-## Limits
+_Held-out pixel MSE for three 64-dimensional representations; lower is better._
+
+## Assumptions and interpretation
 
 The original notebook showed training-image reconstructions at unequal latent dimensions. The revised experiment is a separate controlled comparison, not confirmation of those original results. Random image splits do not ensure identity separation in CelebA. Pixel MSE does not measure perceptual quality or privacy. The VAE is evaluated at its posterior mean.
 

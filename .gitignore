@@ -1,5 +1,6 @@
 data/
 models/
+results/smoke-test/
 .env
 .venv/
 __pycache__/

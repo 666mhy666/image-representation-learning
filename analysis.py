@@ -200,14 +200,15 @@ def run(a):
     device = torch.device(
         "cpu" if a.smoke_test else ("cuda" if torch.cuda.is_available() else "cpu")
     )
-    a.output.mkdir(parents=True, exist_ok=True)
+    result_dir = a.output / "smoke-test" if a.smoke_test else a.output
+    result_dir.mkdir(parents=True, exist_ok=True)
     for name, model, is_vae in [
         ("AE", Autoencoder(dim), False),
         ("VAE", VAE(dim), True),
     ]:
         history = train(model, training, validation, a.epochs, device, is_vae)
         pd.DataFrame(history).to_csv(
-            a.output / f"{name.lower()}-history.csv", index=False
+            result_dir / f"{name.lower()}-history.csv", index=False
         )
         metrics.append(
             dict(
@@ -216,11 +217,8 @@ def run(a):
                 latent_dim=dim,
             )
         )
-    prefix = "smoke-" if a.smoke_test else ""
-    pd.DataFrame(metrics).to_csv(
-        a.output / f"{prefix}reconstruction-metrics.csv", index=False
-    )
-    (a.output / "run.json").write_text(
+    pd.DataFrame(metrics).to_csv(result_dir / "reconstruction-metrics.csv", index=False)
+    (result_dir / "run.json").write_text(
         json.dumps(
             {
                 "data": (
